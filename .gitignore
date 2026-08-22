@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/
+.pytest_cache/
+
+# build artifacts
+dist/
+build/
+*.egg-info/
+
+# IDE
+.idea/
+.omc
+.claude
+
+# OS
+.DS_Store
