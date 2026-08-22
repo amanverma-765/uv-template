@@ -1,13 +1,22 @@
 # Install once per clone:  uvx pre-commit install
 # Run against everything:  uvx pre-commit run --all-files
 #
-# `rev` is pinned to the same ruff version as the `dev` dependency group in
-# pyproject.toml, so the hook and `uv run ruff` never disagree. Bump both together.
+# These call the project's own ruff (the `dev` group in pyproject.toml) instead
+# of a version pinned here, so there is exactly one ruff and the hook can never
+# disagree with `uv run ruff`.
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.4
+  - repo: local
     hooks:
       # lint first: --fix rewrites code, and the formatter must see the result
       - id: ruff-check
-        args: [--fix]
+        name: ruff check
+        entry: uv run ruff check --force-exclude --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
       - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format --force-exclude
+        language: system
+        types_or: [python, pyi]
+        require_serial: true

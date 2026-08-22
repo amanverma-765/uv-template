@@ -48,9 +48,3 @@ interpreter if you don't already have one.
 
 `uv add <pkg>` for runtime, `uv add --dev <pkg>` for tooling. Both write to
 `uv.lock`, which is committed so every clone resolves to the same versions.
-
-### One gotcha
-
-The ruff version is pinned in two places: `rev` in `.pre-commit-config.yaml` and
-the `dev` group in `pyproject.toml`. Bump them together, or the hook and
-`uv run ruff` will disagree about what counts as clean.
