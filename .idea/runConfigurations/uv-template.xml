@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="uv-template" type="UvRunConfigurationType" factoryName="UvRunConfigurationType">
+    <option name="runType" value="MODULE" />
+    <option name="scriptOrModule" value="uv_template.main" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -14,6 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 OLD_NAME = "uv-template"
 OLD_PKG = "uv_template"
+# .idea/ is skipped wholesale below, so this one shared file is handled by hand
+RUN_CFG = ROOT / ".idea" / "runConfigurations" / f"{OLD_NAME}.xml"
 SKIP_DIRS = {
     ".git",
     ".venv",
@@ -84,6 +86,8 @@ def main() -> None:
 
     changed = [p for p in files() if OLD_NAME in (t := p.read_text()) or OLD_PKG in t]
     print(f"\n  rename  src/{OLD_PKG}/ -> src/{pkg}/")
+    if RUN_CFG.exists():
+        print(f"  rewrite {RUN_CFG.relative_to(ROOT)} -> {name}.xml")
     for p in changed:
         print(f"  rewrite {p.relative_to(ROOT)}")
     print(f"  delete  uv.lock, .venv/, {Path(__file__).name}")
@@ -105,6 +109,11 @@ def main() -> None:
                 r'^description = ".*"', f'description = "{desc}"', text, flags=re.M
             )
         p.write_text(text)
+
+    if RUN_CFG.exists():
+        text = RUN_CFG.read_text().replace(OLD_NAME, name).replace(OLD_PKG, pkg)
+        RUN_CFG.write_text(text)
+        RUN_CFG.rename(RUN_CFG.with_name(f"{name}.xml"))
 
     (ROOT / "src" / OLD_PKG).rename(ROOT / "src" / pkg)
     shutil.rmtree(ROOT / ".venv", ignore_errors=True)

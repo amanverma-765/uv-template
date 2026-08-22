@@ -10,8 +10,9 @@ dist/
 build/
 *.egg-info/
 
-# IDE
-.idea/
+# IDE — keep the shared run configuration, ignore the rest
+.idea/*
+!.idea/runConfigurations/
 .omc
 .claude
 
