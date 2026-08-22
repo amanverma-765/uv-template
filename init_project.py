@@ -97,9 +97,8 @@ def main() -> None:
     for p in changed:
         text = p.read_text().replace(OLD_NAME, name).replace(OLD_PKG, pkg)
         if p.name == "README.md":
-            # replace the template's header/footer, keep the "## Use it" body
+            # everything above "## Use it" is template boilerplate; the rest is yours
             body = text.split("## Use it", 1)[-1]
-            body = body.split("## Rename for a new project")[0]
             text = f"# {name}\n\n{desc}\n\n## Use it{body.rstrip()}\n"
         if p.name == "pyproject.toml":
             text = re.sub(
