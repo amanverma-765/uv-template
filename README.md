@@ -1,7 +1,7 @@
 # uv-template
 
-Template for uv-based Python projects: src layout, ruff, pytest, pre-commit.
-Nothing else.
+Template for uv-based Python projects: src layout, ruff, pytest, pre-commit, a
+PyCharm run configuration. Nothing else.
 
 ## Make it yours
 
@@ -15,11 +15,12 @@ python3 init_project.py --dry-run   # preview only
 
 It asks for a project name, a package name and a description, then:
 
-- rewrites those names across `pyproject.toml`, `README.md`, `src/` and `tests/`
-- renames the `src/uv_template/` directory
-- deletes `uv.lock` and `.venv/`
+- rewrites both names through every text file — `pyproject.toml`, `README.md`,
+  `src/`, `tests/`, `.pre-commit-config.yaml`
+- renames `src/uv_template/` and the PyCharm run configuration to match
+- deletes `uv.lock` and `.venv/`, so the next `uv sync` resolves fresh
 - resets git history, if you want it to
-- runs `uv sync` and `uvx pre-commit install`
+- runs `uv sync` and `uvx pre-commit install`, then deletes itself
 
 Everything above this point is template boilerplate and disappears when you run
 it. Everything below becomes your project's README.
@@ -40,11 +41,22 @@ interpreter if you don't already have one.
 
 ### Layout
 
-- `src/uv_template/main.py` — `main()`, what the console script calls
-- `tests/test_main.py` — its test
-- `pyproject.toml` — dependencies, entry point, ruff and pytest config
+| Path | |
+| --- | --- |
+| `src/uv_template/main.py` | `main()`, what the console script calls |
+| `tests/test_main.py` | its test |
+| `pyproject.toml` | dependencies, entry point, ruff and pytest config |
+| `.pre-commit-config.yaml` | the commit hooks |
+| `.idea/runConfigurations/` | the PyCharm run config, committed so it is shared |
 
 ### Dependencies
 
 `uv add <pkg>` for runtime, `uv add --dev <pkg>` for tooling. Both write to
 `uv.lock`, which is committed so every clone resolves to the same versions.
+
+### Hooks
+
+The pre-commit hooks shell out to `uv run ruff` rather than pinning a ruff
+version of their own. There is one ruff — the one in the `dev` group — so the
+hook can never disagree with what you run by hand. Bump it with
+`uv add --dev ruff@latest` and both move together.
