@@ -1,7 +1,7 @@
 # uv-template
 
-Template for uv-based Python projects: src layout, ruff, pytest, pre-commit, a
-PyCharm run configuration. Nothing else.
+Template for uv-based Python projects: src layout, ruff, mypy, pytest,
+pre-commit, a PyCharm run configuration. Nothing else.
 
 ## Make it yours
 
@@ -37,7 +37,8 @@ interpreter if you don't already have one.
 | `uv run pytest` | run the tests |
 | `uv run ruff check --fix .` | lint |
 | `uv run ruff format .` | format |
-| `uvx pre-commit install` | lint and format on every commit, once per clone |
+| `uv run mypy` | type-check |
+| `uvx pre-commit install` | check every commit, once per clone |
 
 ### Layout
 
@@ -45,7 +46,7 @@ interpreter if you don't already have one.
 | --- | --- |
 | `src/uv_template/main.py` | `main()`, what the console script calls |
 | `tests/test_main.py` | its test |
-| `pyproject.toml` | dependencies, entry point, ruff and pytest config |
+| `pyproject.toml` | dependencies, entry point, ruff, mypy and pytest config |
 | `.pre-commit-config.yaml` | the commit hooks |
 | `.idea/runConfigurations/` | the PyCharm run config, committed so it is shared |
 
@@ -56,7 +57,10 @@ interpreter if you don't already have one.
 
 ### Hooks
 
-The pre-commit hooks shell out to `uv run ruff` rather than pinning a ruff
-version of their own. There is one ruff — the one in the `dev` group — so the
-hook can never disagree with what you run by hand. Bump it with
-`uv add --dev ruff@latest` and both move together.
+The pre-commit hooks shell out to `uv run ruff` and `uv run mypy` rather than
+pinning versions of their own. There is one of each — the ones in the `dev`
+group — so a hook can never disagree with what you run by hand. Bump them with
+`uv add --dev ruff@latest mypy@latest` and both sides move together.
+
+mypy runs in `strict` mode over `src`, `tests` and `init_project.py`. Loosen it
+in the `[tool.mypy]` block if a dependency ships no stubs.

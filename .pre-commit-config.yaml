@@ -1,9 +1,9 @@
 # Install once per clone:  uvx pre-commit install
 # Run against everything:  uvx pre-commit run --all-files
 #
-# These call the project's own ruff (the `dev` group in pyproject.toml) instead
-# of a version pinned here, so there is exactly one ruff and the hook can never
-# disagree with `uv run ruff`.
+# These call the project's own ruff and mypy (the `dev` group in pyproject.toml)
+# instead of versions pinned here, so there is exactly one of each and the hooks
+# can never disagree with `uv run ruff` / `uv run mypy`.
 repos:
   - repo: local
     hooks:
@@ -19,4 +19,12 @@ repos:
         entry: uv run ruff format --force-exclude
         language: system
         types_or: [python, pyi]
+        require_serial: true
+      # mypy needs the whole package, not the changed files, to resolve imports
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
         require_serial: true
