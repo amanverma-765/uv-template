@@ -60,7 +60,7 @@ interpreter if you don't already have one.
 The pre-commit hooks shell out to `uv run ruff` and `uv run mypy` rather than
 pinning versions of their own. There is one of each — the ones in the `dev`
 group — so a hook can never disagree with what you run by hand. Bump them with
-`uv add --dev ruff@latest mypy@latest` and both sides move together.
+`uv add --upgrade --dev ruff mypy` and both sides move together.
 
 mypy runs in `strict` mode over `src`, `tests` and `init_project.py`. Loosen it
 in the `[tool.mypy]` block if a dependency ships no stubs.

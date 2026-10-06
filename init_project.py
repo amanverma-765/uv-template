@@ -104,10 +104,12 @@ def main() -> None:
             # everything above "## Use it" is template boilerplate; the rest is yours
             body = text.split("## Use it", 1)[-1]
             text = f"# {name}\n\n{desc}\n\n## Use it{body.rstrip()}\n"
+            text = text.replace(", `tests` and `init_project.py`", " and `tests`")
         if p.name == "pyproject.toml":
             text = re.sub(
                 r'^description = ".*"', f'description = "{desc}"', text, flags=re.M
             )
+            text = text.replace(', "init_project.py"', "")
         p.write_text(text)
 
     if RUN_CFG.exists():
